@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create a car</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    form {
+      width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: dodgerblue;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 5px;
+    }
+
+    input[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: dodgerblue;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #2696ff;
+    }
+  </style>
+</head>
+<body>
+<form th:method="POST" th:action="@{/cars/new}" th:object="${car}">
+  <label for="brand">Enter brand:</label>
+  <input type="text" th:field="*{brand}" id="brand"/>
+  <div class="error-message" th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}">Brand error</div>
+  <br/>
+
+  <label for="model">Enter model:</label>
+  <input type="text" th:field="*{model}" id="model">
+  <div class="error-message" th:if="${#fields.hasErrors('model')}" th:errors="*{model}">Model error</div>
+  <br/>
+
+  <label for="year">Enter year:</label>
+  <input type="text" th:field="*{year}" id="year">
+  <div class="error-message" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year error</div>
+  <br/>
+
+  <label for="type">Enter type:</label>
+  <input type="text" th:field="*{type}" id="type">
+  <div class="error-message" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Type error</div>
+  <br/>
+
+  <label for="drive_type">Enter drive type:</label>
+  <input type="text" th:field="*{drive_type}" id="drive_type">
+  <div class="error-message" th:if="${#fields.hasErrors('drive_type')}" th:errors="*{drive_type}">Drive type error</div>
+  <br/>
+
+  <label for="mileage">Enter mileage:</label>
+  <input type="text" th:field="*{mileage}" id="mileage">
+  <div class="error-message" th:if="${#fields.hasErrors('mileage')}" th:errors="*{mileage}">Mileage error</div>
+  <br/>
+
+  <label for="color">Enter color:</label>
+  <input type="text" th:field="*{color}" id="color">
+  <div class="error-message" th:if="${#fields.hasErrors('color')}" th:errors="*{color}">Color error</div>
+  <br/>
+
+  <label for="engine_liter">Enter engine liter:</label>
+  <input type="text" th:field="*{engine_liter}" id="engine_liter">
+  <div class="error-message" th:if="${#fields.hasErrors('engine_liter')}" th:errors="*{engine_liter}">Engine liter error</div>
+  <br/>
+
+  <label for="price">Enter price:</label>
+  <input type="text" th:field="*{price}" id="price">
+  <div class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
+  <br/>
+
+  <input type="submit" value="Create">
+</form>
+</body>
+</html>

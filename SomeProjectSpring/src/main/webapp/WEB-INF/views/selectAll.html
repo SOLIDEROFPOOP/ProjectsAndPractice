@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Select All</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        a {
+            color: dodgerblue;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .car-item {
+            margin-bottom: 10px;
+        }
+
+        .car-details {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .add-car-link {
+            display: block;
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+
+        .add-car-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div th:each="car: ${cars}" class="car-item">
+    <a th:href="@{/cars/{id}(id=${car.getId()})}" class="car-details"
+       th:text="${car.getId()} + ': ' + ${car.getBrand()} + ', ' + ${car.getModel()}"></a>
+</div>
+<br/>
+<hr/>
+<a href="/cars/new" class="add-car-link">Add a new car</a>
+</body>
+</html>

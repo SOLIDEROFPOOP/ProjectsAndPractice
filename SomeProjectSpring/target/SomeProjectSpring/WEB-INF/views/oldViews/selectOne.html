@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>selectOne</title>
+</head>
+<body>
+<p th:text="'Id: ' + ${car.getId()}">Value</p>
+<p th:text="'Brand: ' + ${car.getBrand()}">Value</p>
+<p th:text="'Model: ' + ${car.getModel()}">Value</p>
+<p th:text="'Year: ' + ${car.getYear()}">Value</p>
+<p th:text="'Type: ' + ${car.getType()}">Value</p>
+<p th:text="'Drive type: ' + ${car.getDrive_type()}">Value</p>
+<p th:text="'Mileage: ' + ${car.getMileage()}">Value</p>
+<p th:text="'Color: ' + ${car.getColor()}">Value</p>
+<p th:text="'Engine liter: ' + ${car.getEngine_liter()}">Value</p>
+<p th:text="'Price: ' + ${car.getPrice()}">Value</p>
+<br/>
+<hr/>
+<form th:method="DELETE" th:action="@{/cars/{id}(id=${car.getId()})}">
+  <input type="submit" value="Delete">
+</form>
+</body>
+</html>
