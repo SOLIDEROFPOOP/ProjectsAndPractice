@@ -1,6 +1,8 @@
 type Query{
     users: [User]
     posts: [Post]
+    user(username:String): User
+    findPostsByUserId(id:ID): [Post]
 }
 
 type User{

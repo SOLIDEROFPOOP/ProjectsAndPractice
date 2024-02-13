@@ -1,7 +1,6 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class CodeWars {
+public class RepeatSum {
     public static int repeats(int [] arr){
         int sum = 0;
         ArrayList<Integer> nums = new ArrayList<>();
