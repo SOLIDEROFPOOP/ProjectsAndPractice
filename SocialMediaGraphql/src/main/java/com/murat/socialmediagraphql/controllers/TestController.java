@@ -8,10 +8,12 @@ import com.murat.socialmediagraphql.services.PostService;
 import com.murat.socialmediagraphql.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class TestController {
@@ -39,4 +41,13 @@ public class TestController {
     List<Post> findPostsByUserId(@Argument Long id){
         return postService.findPostsByUserId(id);
     }
+    @MutationMapping
+    Post createPost(@Argument CreatePostInput CreatePostInput){
+        Post post = new Post();
+        post.setContent(CreatePostInput.content);
+        Optional<User> user = userRepository.findById(CreatePostInput.userId);
+        post.setUser(user.get());
+        return postService.addPost(post);
+    }
+    public record CreatePostInput(String content, Long userId){}
 }
