@@ -1,82 +1,89 @@
-import java.util.*;
+class ProcessSRT {
+    int pid;
+    int bt;
+    int art;
 
-class Process {
-    private String name;
-    private int arrivalTime;
-    private int burstTime;
-    private int remainingTime;
-
-    public Process(String name, int arrivalTime, int burstTime) {
-        this.name = name;
-        this.arrivalTime = arrivalTime;
-        this.burstTime = burstTime;
-        this.remainingTime = burstTime;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getArrivalTime() {
-        return arrivalTime;
-    }
-
-    public int getBurstTime() {
-        return burstTime;
-    }
-
-    public int getRemainingTime() {
-        return remainingTime;
-    }
-
-    public void setRemainingTime(int remainingTime) {
-        this.remainingTime = remainingTime;
+    public ProcessSRT(int pid, int bt, int art) {
+        this.pid = pid;
+        this.bt = bt;
+        this.art = art;
     }
 }
 
 public class SRT {
-    public static void main(String[] args) {
-        List<Process> processes = new ArrayList<>();
-        processes.add(new Process("P1", 0, 8));
-        processes.add(new Process("P2", 1, 4));
-        processes.add(new Process("P3", 2, 6));
-        processes.add(new Process("P4", 3, 3));
+    static void findWaitingTime(ProcessSRT proc[], int n, int wt[]) {
+        int rt[] = new int[n];
 
-        executeProcesses(processes);
+        for (int i = 0; i < n; i++)
+            rt[i] = proc[i].bt;
+
+        int complete = 0, t = 0, minm = Integer.MAX_VALUE;
+        int shortest = 0, finish_time;
+        boolean check = false;
+
+        while (complete != n) {
+            for (int j = 0; j < n; j++) {
+                if ((proc[j].art <= t) && (rt[j] < minm) && rt[j] > 0) {
+                    minm = rt[j];
+                    shortest = j;
+                    check = true;
+                }
+            }
+
+            if (check == false) {
+                t++;
+                continue;
+            }
+
+            rt[shortest]--;
+
+            minm = rt[shortest];
+            if (minm == 0)
+                minm = Integer.MAX_VALUE;
+
+            if (rt[shortest] == 0) {
+                complete++;
+                check = false;
+
+                finish_time = t + 1;
+
+                wt[shortest] = finish_time - proc[shortest].bt - proc[shortest].art;
+
+                if (wt[shortest] < 0)
+                    wt[shortest] = 0;
+            }
+            t++;
+        }
     }
 
-    public static void executeProcesses(List<Process> processes) {
-        System.out.println("Execution order:");
+    static void findTurnAroundTime(ProcessSRT proc[], int n, int wt[], int tat[]) {
+        for (int i = 0; i < n; i++)
+            tat[i] = proc[i].bt + wt[i];
+    }
 
-        int currentTime = 0;
-        int completedProcesses = 0;
-        PriorityQueue<Process> readyQueue = new PriorityQueue<>(Comparator.comparingInt(Process::getRemainingTime).thenComparing(Process::getArrivalTime));
+    static void findavgTime(ProcessSRT proc[], int n) {
+        int wt[] = new int[n], tat[] = new int[n];
+        int total_wt = 0, total_tat = 0;
 
-        while (completedProcesses < processes.size()) {
-            // Add arriving processes to the ready queue
-            for (Process process : processes) {
-                if (process.getArrivalTime() <= currentTime && !readyQueue.contains(process)) {
-                    readyQueue.offer(process);
-                }
-            }
+        findWaitingTime(proc, n, wt);
 
-            // Select process with shortest remaining time
-            Process currentProcess = readyQueue.poll();
-            if (currentProcess != null) {
-                System.out.println("Executing " + currentProcess.getName() + " at time " + currentTime);
-                int remainingTime = currentProcess.getRemainingTime() - 1;
+        findTurnAroundTime(proc, n, wt, tat);
 
-                if (remainingTime == 0) {
-                    completedProcesses++;
-                } else {
-                    currentProcess.setRemainingTime(remainingTime);
-                    readyQueue.offer(currentProcess);
-                }
+        System.out.println("Pro " + " BT " + " WT " + " TAT");
 
-                currentTime++;
-            } else {
-                currentTime++; // No process to execute, move to the next time unit
-            }
+        for (int i = 0; i < n; i++) {
+            total_wt = total_wt + wt[i];
+            total_tat = total_tat + tat[i];
+            System.out.println(" " + proc[i].pid + "\t\t" + proc[i].bt + "\t\t " + wt[i] + "\t\t" + tat[i]);
         }
+
+        System.out.println("Average waiting time = " + (float)total_wt / (float)n);
+        System.out.println("Average turn around time = " + (float)total_tat / (float)n);
+    }
+
+    public static void main(String[] args) {
+        ProcessSRT proc[] = { new ProcessSRT(1, 6, 1), new ProcessSRT(2, 8, 1), new ProcessSRT(3, 7, 2), new ProcessSRT(4, 3, 3)};
+
+        findavgTime(proc, proc.length);
     }
 }
